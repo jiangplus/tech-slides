@@ -25,9 +25,8 @@
 class: center, middle
 
 ## 去中心存储的未来：IPFS 与 Dat
-by jiangplus
 
-2018-3-17, shlug
+by jiangplus
 
 ---
 
@@ -35,11 +34,9 @@ by jiangplus
 
  * 一个去中心化的文件共享网络
 
- * 目标是组织所有的文件资源，成为互联网的基础设施
-
  * 类似 Amazon S3
 
- * 2013 年提出了最早的 filecoin 白皮书
+ * 2013 年提出了最早的 Filecoin 白皮书
 
  * 2017 年 8 月 ICO，筹得 2.5 亿美元，第一个小时筹到 1.86 亿美元
 
@@ -49,7 +46,9 @@ by jiangplus
 
 # Content Address
 
- * HTTP 协议一种基于位置的资源寻址机制（location address）
+ * HTTP 协议一种基于位置的资源寻址机制
+
+  location address
 
 
 ```
@@ -57,7 +56,9 @@ by jiangplus
 ```
 
 
- * Content Address 则是基于内容的文件获取方式，使用 Hash 来识别资源，而允许以任意方式获取
+ * Content Address 则是基于内容的文件获取方式
+
+  使用 Hash 来识别资源，而允许以任意方式获取
 
 
 ```
@@ -70,9 +71,11 @@ by jiangplus
 
  * location address 指定了资源的来源和获取方式，比较简单
 
- * location address 制定资源的内容签名，强调资源一致性，可靠性，开放性，并且使得去中心成为可能
+ * content address 制定资源的内容签名，强调资源一致性，可靠性，开放性，并且使得去中心成为可能
  
- * IPFS本质上就是一个 content address 的网络，集成多种网络协议，使资源获取是可靠的，永久的，可缓存，开放的
+ * IPFS本质上就是一个 content address 的网络
+
+   集成多种网络协议，使资源获取是可靠的，永久的，可缓存，开放的
 
 
 ---
@@ -87,42 +90,16 @@ by jiangplus
 ```
 # sha1 - 0x11 - sha1("multihash")
 111488c2f11fb2ce392acb5b2986e640211c4690073e # sha1 in hex
-CEKIRQXRD6ZM4OJKZNNSTBXGIAQRYRUQA47A==== # sha1 in base32
 5dsgvJGnvAfiR3K6HCBc4hcokSfmjj # sha1 in base58
 ERSIwvEfss45KstbKYbmQCEcRpAHPg== # sha1 in base64
-
-
-# sha2-256 0x12 - sha2-256("multihash")
-12209cbc07c3f991725836a3aa2a581ca2029198aa420b9d99bc0e131d9f3e2cbe47 # sha2-256 in hex
-CIQJZPAHYP4ZC4SYG2R2UKSYDSRAFEMYVJBAXHMZXQHBGHM7HYWL4RY= # sha256 in base32
-QmYtUc4iTCbbfVSDNKvtQqrfyezPPnFvE33wFmutw9PBBk # sha256 in base58
-EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 ```
-
+ * https://github.com/multiformats/multihash
 
 ---
 
-# DHT
+# Kademlia DHT
 
- * IPFS 定义的一种自描述哈希编码格式，包含哈希算法，长度和哈希内容
-
- * 使得哈希算法更加灵活，可升级
-
-
-```
-# sha1 - 0x11 - sha1("multihash")
-111488c2f11fb2ce392acb5b2986e640211c4690073e # sha1 in hex
-CEKIRQXRD6ZM4OJKZNNSTBXGIAQRYRUQA47A==== # sha1 in base32
-5dsgvJGnvAfiR3K6HCBc4hcokSfmjj # sha1 in base58
-ERSIwvEfss45KstbKYbmQCEcRpAHPg== # sha1 in base64
-
-
-# sha2-256 0x12 - sha2-256("multihash")
-12209cbc07c3f991725836a3aa2a581ca2029198aa420b9d99bc0e131d9f3e2cbe47 # sha2-256 in hex
-CIQJZPAHYP4ZC4SYG2R2UKSYDSRAFEMYVJBAXHMZXQHBGHM7HYWL4RY= # sha256 in base32
-QmYtUc4iTCbbfVSDNKvtQqrfyezPPnFvE33wFmutw9PBBk # sha256 in base58
-EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
-```
+![](Dht_example_SVG.svg.png)
 
 ---
 
@@ -132,11 +109,11 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
  * 根据 ID 的每一位，让所有节点构成一颗二叉树的叶子
 
- * 定义了两个ID之间的一种距离（xor），相同的前缀位越多越接近
-
- * 每个节点都保存有一些近邻节点信息
+ * 定义了两个ID之间的一种距离（xor），相同前缀越长越接近
 
  * 可以实现高效的资源发现，对于 n 个节点的网络只需 O(log(n)) 次查询，即对数复杂性
+
+ * 每个节点都保存有一些近邻节点信息
 
  * 可以抵抗若干攻击类型的干扰
 
@@ -148,7 +125,7 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
  * 高效验证资源有效性，并且天然去除重复文件
 
- * 对于一个文件夹，生成总的 hash，并且可以按目录结构获取子文件
+ * 对于一个文件夹的总 hash，按目录结构获取子文件
 
 
 ```
@@ -163,7 +140,7 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
  * 根据负债率控制传输的概率，作为激励机制
 
- * 节点会交换账本
+ * 节点交换账本
 
 ---
 
@@ -183,21 +160,31 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
 # 节点与身份
 
- * 每个 IPFS 节点也会有一对 key，作为节点的身份
+ * 每个 IPFS 节点有一对密钥作为节点的身份
 
- * 要给对方发送私密文件，可以用对方的公钥加密文件
+ * 要给对方发送私密文件，可以用公钥加密
 
 ---
 
 # Filecoin
 
-  * Filecoin 协议是基于区块链和 IPFS 的去中心化存储网络。用户花费 FIL 来存储和下载数据，而矿工们通过提供存储和下载数据来赚取 FIL
+  * Filecoin 去中心存储网络，基于区块链和 IPFS。
 
-  * Filecoin DSN 分成存储市场和检索市场。用户和矿工设定所要求和提供服务的价格，并将其订单提交到市场进行竞价。
+    用户花费 FIL 来存储和下载数据，而矿工们通过提供存储和下载数据来赚取 FIL
 
-  * 交易市场由 Filecoin 网络来操作，该网络采用了 Proof-of-Spacetime 和 Proof-of-Replication 来确保矿工提供有效的服务。
+  * Filecoin 分成存储市场和获取市场。
 
-  * 矿工们能参与到区块链新区块的挖矿。矿工挖矿的权力与他们在网络中当前提供的存储使用量成正比，通过代币的未来价值补贴矿工。
+    用户和矿工设定价格，向市场提交订单进行竞价。
+
+  * 交易市场由 Filecoin 网络来操作
+
+    该网络采用了 Proof-of-Spacetime 和 Proof-of-Replication 来确保矿工提供有效的服务。
+
+  * 矿工们能参与到区块链新区块的挖矿。
+
+    矿工挖矿的权力与他们在网络中当前提供的存储使用量成正比
+
+    通过代币的未来价值补贴矿工。
 
 ---
 
@@ -205,7 +192,9 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
   * 为了证明矿工履行了存储合约的义务，每隔一段时间生成一个随机数 challenge，矿工要根据这个随机数和文件内容生成证明
 
-  * 如果一段时间内矿工没有回应，失去奖励，并罚款（矿工为了接受任务需要预存一部分押金）
+  * 如果一段时间内矿工没有回应，失去奖励，并罚款
+
+  （矿工为了接受任务需要预存一部分押金）
 
   * 随着时间不断推移，矿工完成合约，得到 FIL 代币
 
@@ -217,11 +206,13 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
   * 外包攻击：依赖于可以快速从其他存储提供商获取数据，作恶矿工可能承诺能存储比他们实际物理存储容量更大的数据。
 
-  * 生成攻击：作恶矿工可能宣称要存储大量的数据，但实际上这些数据随时可以低成本重新生成。作恶矿工在 Filecoin 获取区块奖励的可能性增加了，因为这是和矿工当前使用量成正比的。
+  * 生成攻击：作恶矿工可能宣称要存储大量的数据，但实际上这些数据随时可以低成本重新生成。作恶
+
+    矿工创造虚假交易，获取区块奖励的可能性增加了，因为这是和矿工当前使用量成正比的。
 
 解决方案：
 
-  * 每个矿工需要各自加密文件，并且使用的加密算法计算量比较大，对应解密计算量比较少（Seal）
+  * Seal: 每个矿工需要各自加密文件，并且使用的加密算法计算量比较大，对应解密计算量比较少
 
   * 使得生成自己的加密副本的代价比单纯存储更大
 
@@ -231,11 +222,11 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
  * 一个比较完备的存储证明和激励机制，但代价比较大
 
- * 本质上是一种 PoW，但使得工作是有用的
+ * 本质上是一种 Useful PoW
 
  * 用户需要发起多个备份副本才能保证可以用性和安全性
 
- * 需要跟 S3 等中心化存储竞争成本
+ * 跟 S3 等中心化存储竞争成本
 
 ---
 
@@ -249,6 +240,8 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
  * 使用 JavaScript 开发（背后是一群 nodejs 社区的大佬）
 
+ * 有一个类似 github 的门户，目前没有激励机制
+
 ---
 
 # Dat
@@ -257,7 +250,7 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
  * authenticated，syncable，flexible，REST-compatible，incremental
 
- * mirroring，versioning，network privacy，random acces
+ * mirroring，versioning，network privacy，random access
 
  * 区块链思想和 git 的结合
 
@@ -281,6 +274,8 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
  * 序列中的偶数项为 Merkle Tree 的 leaf 节点哈希，技术项为 leaf 节点哈希的哈希
 
+ * https://tools.ietf.org/html/rfc7574#page-22
+
 0. hash(chunk0)
 1. hash(hash(chunk0) + hash(chunk1))
 2. hash(chunk1)
@@ -298,17 +293,21 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
  * 这个设计来自 PPSPP 流媒体协议
 
+ * 很像区块链！
+
+ * 当树没有满的时候，序列中会有洞，使用 bitfield 表示填充情况
+
 ---
 
 # Hypercore
 
- * Dat 核心的 Merkle Tree 和 bin numbering，bitfield，验证机制作为 Hypercore
+ * Dat 核心的 Merkle Tree 和 bin number，bitfield，验证机制
 
  * 这是一个 append-only feed
 
  * 两个 Hypercore 的双层结构构成了一个 Hyperdrive
 
- * HyperVision 是基于 Hypercore 的视频流媒体程序
+   元数据层，内容层
 
  * 默认使用 dht 和 udp 维护网络及进行传输
 
@@ -364,7 +363,7 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
 # 各种平台的比较 - IPFS，Filecoin
 
- * Content Address, ambious
+ * Content Address, ambitious
 
  * 适用 S3 的应用场景
 
@@ -374,15 +373,11 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
 
  * 社区开始形成，财力雄厚，经济激励强
 
- * 当前通过 gateway 访问
-
 ---
 
 # 各种平台的比较 - Dat
 
- * Content Address
-
- * 当前实现比较完善，核心团队比较强
+ * 当前实现比较完善
 
  * 目标是开放数据共享
 
@@ -391,8 +386,6 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
  * 类似 git 的动态数据集，时间和空间上的稀疏复制
 
  * 适合更多应用场景（基于不可篡改的历史提供动态数据接口）
-
- * 很轻量的 API
 
 ---
 
@@ -403,6 +396,15 @@ EiCcvAfD+ZFyWDajqipYHKICkZiqQgudmbwOEx2fPiy+Rw== # sha256 in base64
  * 激励机制是非常有挑战的，目前没有成熟的成功案例
 
  * Dat 也可以基于 IPFS 重新实现
+
+---
+
+ * https://docs.datproject.org/faq
+
+ * https://en.wikipedia.org/wiki/Kademlia
+
+ * https://en.wikipedia.org/wiki/Merkle_tree
+
 
 
     </textarea>
