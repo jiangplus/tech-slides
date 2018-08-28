@@ -1,28 +1,3 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Towards Eventual Consistency</title>
-    <meta charset="utf-8">
-    <style>
-      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
-      body { font-family: 'Droid Serif'; }
-      h1, h2, h3 {
-        font-family: 'Yanone Kaffeesatz';
-        font-weight: normal;
-      }
-      img {
-        max-width: 70%;
-        max-height: 50%;
-      }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-    </style>
-  </head>
-  <body>
-    <textarea id="source">
-class: center, middle
 
 ## CRDT : Towards Eventual Consistency
 by jiangplus
@@ -200,13 +175,3 @@ Two-Phase Set (2P-Set) is a Set where an element may be added and removed, but n
 ---
 
 # Thank you
-
-
-    </textarea>
-    <script src="./remark-latest.min.js">
-    </script>
-    <script>
-      var slideshow = remark.create();
-    </script>
-  </body>
-</html>
